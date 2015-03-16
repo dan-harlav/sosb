@@ -1,0 +1,64 @@
+name = SOS Bambini
+description = Install with commonly used features pre-configured.
+
+core = 7.x
+
+files[] = standard.profile
+
+; core
+dependencies[] = block
+dependencies[] = comment
+dependencies[] = contextual
+dependencies[] = help
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = search
+dependencies[] = taxonomy
+dependencies[] = dblog
+dependencies[] = shortcut
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = rdf
+
+; contrib
+dependencies[] = admin_menu
+dependencies[] = adminimal_admin_menu
+dependencies[] = advanced_help
+dependencies[] = ckeditor
+dependencies[] = ctools
+dependencies[] = ctools_custom_content
+dependencies[] = double_field
+dependencies[] = entity
+dependencies[] = fast_404
+dependencies[] = features
+dependencies[] = field_group
+dependencies[] = front_page
+dependencies[] = googleanalytics
+dependencies[] = htmlmail
+dependencies[] = jquery_update
+dependencies[] = libraries
+dependencies[] = login_destination
+dependencies[] = module_filter
+dependencies[] = node_reference
+dependencies[] = page_manager
+dependencies[] = panels
+dependencies[] = panels_mini
+dependencies[] = panels_node
+dependencies[] = panels_ipe
+dependencies[] = pathauto
+dependencies[] = references
+dependencies[] = strongarm
+dependencies[] = taxonomy_manager
+dependencies[] = token
+dependencies[] = views
+dependencies[] = views_content
+dependencies[] = views_ui
+
+; custom
+dependencies[] = sosb_general
+dependencies[] = sosb_features
+

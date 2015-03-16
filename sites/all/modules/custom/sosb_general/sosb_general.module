@@ -1,0 +1,164 @@
+<?php
+
+/**
+ * @file
+ * Implements general functionalities for the CBI project.
+ */
+
+/**
+ * Implements hook_init().
+ */
+function sosb_general_init() {
+  // echo '<pre>';
+  // var_export(node_load(3));
+  // kpr($_GET['q']);
+}
+
+function sosb_general_preprocess_node (&$variables) {
+  unset($variables['content']['links']['node']['#links']['node-readmore']);
+}
+
+/**
+ * Implements hook_custom_theme().
+ */
+function sosb_general_custom_theme() {
+  $args = arg();
+  if (reset($args) == 'user') {
+    return 'ember';
+  }
+}
+
+
+/**
+ * Implements hook_menu_breadcrumb_alter().
+ */
+function sosb_general_menu_breadcrumb_alter(&$active_trail, $item) {
+  if (user_access('administer bidding app')) {
+    foreach ($active_trail as $key => $item) {
+      if (isset($item['link_path']) && $item['link_path'] == 'admin') {
+        unset($active_trail[$key]);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_page_alter().
+ */
+function sosb_general_page_alter(&$page) {
+  // Remove the breadcrumb on login page; set to empty array.
+  if ($_GET['q'] == 'user/login') {
+    drupal_set_breadcrumb(array());
+  }
+}
+
+/**
+ * Returns the rid by role name.
+ */
+function sosb_general_get_role_by_name($name) {
+  $roles = user_roles();
+  return array_search($name, $roles);
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function sosb_general_block_info() {
+  $blocks = array();
+  $blocks['sosb_banners'] = array(
+    'info' => t('SOS Bambini Banners'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function sosb_general_block_block_configure($delta='') {
+  $form = array();
+
+  switch($delta) {
+    case 'sosb_banners' :
+      // Text field form element
+      $form['text_body'] = array(
+        '#type' => 'full_html',
+        '#title' => t('Enter your text here in WYSIWYG format'),
+        '#default_value' => 'Merge',
+      );
+
+      // File selection form element
+      $form['file'] = array(
+        '#name' => 'block_image',
+        '#type' => 'managed_file',
+        '#title' => t('Choose an Image File'),
+        '#description' => t('Select an Image for the custom block.  Only *.gif, *.png, *.jpg, and *.jpeg images allowed.'),
+        '#default_value' => variable_get('block_image_fid', ''),
+        '#upload_location' => 'public://block_image/',
+        '#upload_validators' => array(
+          'file_validate_extensions' => array('gif png jpg jpeg'),
+        ),
+      );
+      break;
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function sosb_general_block_block_view($delta='') {
+  $block = array();
+
+  switch($delta) {
+    case 'sosb_banners' :
+      $block['content'] = sosb_general_banners_block_view();
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Custom function to assemble renderable array for block content.
+ * Returns a renderable array with the block content.
+ * @return
+ *   returns a renderable array of block content.
+ */
+function sosb_general_banners_block_view() {
+  $block = array();
+
+  // Capture the image file path and form into HTML with attributes
+  $image_file = file_load(variable_get('block_image_fid', ''));
+  $image_path = '';
+
+  if (isset($image_file->uri)) {
+    $image_path = $image_file->uri;
+  }
+
+  $image = theme_image(array(
+    'path' => ($image_path),
+    'alt' => t('Image description here.'),
+    'title' => t('This is our block image.'),
+    'attributes' => array('class' => 'class_name'),
+  ));
+
+  // Capture WYSIWYG text from the variable
+  $text = variable_get('text_variable', '');
+
+  // Block output in HTML with div wrapper
+  $block = array(
+    'image' => array(
+      '#prefix' => '',
+      '#type' => 'markup',
+      '#markup' => $image,
+    ),
+    'message' => array(
+      '#type' => 'markup',
+      '#markup' => $text,
+      '#suffix' => '',
+    ),
+  );
+
+  return $block;
+}

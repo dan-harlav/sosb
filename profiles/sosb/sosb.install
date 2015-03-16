@@ -1,0 +1,21 @@
+<?php
+
+require_once __FILE__ . '.php';
+
+/**
+ * Install hook for the sosb profile.
+ */
+function sosb_install() {
+  sosb_install_create_text_formats();
+  sosb_install_setup_roles();
+  sosb_install_setup_themes();
+  // sosb_add_content();
+  // sosb_clear_mongo_settings();
+  // sosb_translations_clear_mongo_translations_data();
+  // sosb_write_default_settings();
+  // sosb_install_setup_redirects();
+  // sosb_ultimate_cron_settings();
+  // sosb_settings_generate_full_settings_nodes();
+  // sosb_create_default_users();
+  sosb_generate_content();
+}

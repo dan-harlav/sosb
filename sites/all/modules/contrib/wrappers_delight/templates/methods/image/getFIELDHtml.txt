@@ -1,0 +1,24 @@
+  /**
+   * Retrieves {{ field_name }} as an HTML <img> tag
+   *
+   * @param string $image_style
+   *   (optional) Image style for the HTML
+   * @param array $attributes
+   *   IMG tag attributes
+   *
+   * @return string[]
+   */
+  public function get{{ field_name_camelized }}Html($image_style = NULL, $attributes = array()) {
+    $images = $this->get('{{ field_name }}');
+    if (!empty($images)) {
+      foreach ($images as $i => $image) {
+        if (!is_null($image_style)) {
+          $images[$i] = theme('image_style', array('path' => $image['uri'], 'style_name' => $image_style, 'attributes' => $attributes));
+        }
+        else {
+          $images[$i] = theme('image_style', array('path' => $image['uri'], 'attributes' => $attributes));
+        }
+      }
+    }
+    return $images;
+  }

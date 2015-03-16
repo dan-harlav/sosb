@@ -1,0 +1,7 @@
+name = SOS Bambini General functions
+description = Module for storing general functionalities.
+package = SOS Bambini
+core = 7.x
+
+files[] = sosb_general.module
+files[] = includes/sosb_general.helper.inc
