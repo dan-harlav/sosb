@@ -210,6 +210,7 @@ function sosb_write_default_settings() {
 }
 
 function sosb_generate_content() {
+  // return;
   $nodes = array(
     0 => array(
       'content' => '<br/>
@@ -224,6 +225,7 @@ function sosb_generate_content() {
       'link_title' => 'Who we are',
       'alias' => 'who-are-we',
       'promote' => 1,
+      'carousel_images' => array('wwa-1.jpg', 'wwa-2.jpg', 'wwa-3.jpg'),
     ),
     1 => array(
       'content' => 'The activities of the Association take place in:
@@ -246,22 +248,43 @@ families in the municipal landfill of Coban.',
       'title' => 'OUR PROJECTS',
       'link_title' => 'Our projects',
       'alias' => 'our-projects',
+      'carousel_images' => array('op-1.jpg', 'op-2.jpg', 'op-3.jpg'),
     ),
   );
   foreach ($nodes as $key => $node) {
-    $customNode = new stdClass();
-    $customNode->type = 'page';
-    node_object_prepare($customNode);
-    $customNode->uid = 1;
-    $customNode->name = 'admin';
+    $e = entity_create('node', array('type' => 'page'));
+    $e->uid = 1;
+    $e->name = 'admin';
 
-    $customNode->title = $node['title'];
-    $customNode->language = LANGUAGE_NONE;
-    $customNode->body[$customNode->language][0]['value'] =
-    $customNode->body[$customNode->language][0]['summary'] = $node['content'];
-    $customNode->body[$customNode->language][0]['format'] = 'full_html';
+    $wrapper = entity_metadata_wrapper('node', $e);
+    $wrapper->title->set($node['title']);
+    $wrapper->language(LANGUAGE_NONE);
+    $wrapper->promote = isset($node['promote']) ? $node['promote']: 0;
+    $wrapper->save();
 
-    $customNode->menu = array(
+    $nid = $wrapper->getIdentifier();
+
+    $wrapper->body->summary = $wrapper->body->value = $node['content'];
+    $wrapper->body->format = 'full_html';
+
+    if (empty($node['carousel_images'])) {
+      $node['carousel_images'] = array();
+    }
+    foreach ($node['carousel_images'] as $i => $path) {
+      $file_path = drupal_get_path('module', 'sosb_general') . "/page_corousel_images-bkp/$path";
+      $dir = "public://page_corousel_images/$nid";
+      if (!drupal_valid_path($dir)) {
+        file_prepare_directory($dir, FILE_CREATE_DIRECTORY);
+      }
+      $file = file_save_data(file_get_contents($file_path), "$dir/$path");
+      $wrapper->field_page_carousel[$i]->file->set($file);
+      // drupal_unlink($file_path);
+    }
+    $wrapper->save();
+
+    $fresh_node = node_load($nid);
+    node_object_prepare($fresh_node);
+    $fresh_node->menu = array(
         'enabled' => 1,
         'mlid' => 0,
         'module' => 'menu',
@@ -278,17 +301,10 @@ families in the municipal landfill of Coban.',
         'plid' => 0,
         'menu_name' => 'main-menu'
      );
-    $customNode->path['pathauto'] = FALSE;
-    $customNode->path['alias'] = $node['alias'];
-    $customNode->comment = 1;
-    $customNode->status = 1;
-    $customNode->promote = isset($node['promote']) ? $node['promote']: 0;
-    $customNode->revision = 0;
-
-    $customNode->changed = $_SERVER['REQUEST_TIME'];
-    $customNode->created = $_SERVER['REQUEST_TIME'];
-
-    node_submit($customNode);
-    node_save($customNode);
+    $fresh_node->path['pathauto'] = FALSE;
+    $fresh_node->path['alias'] = $node['alias'];
+    $fresh_node->comment = 1;
+    $fresh_node->revision = 0;
+    node_save($fresh_node);
   }
 }

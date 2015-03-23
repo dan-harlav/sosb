@@ -60,5 +60,5 @@ dependencies[] = views_ui
 
 ; custom
 dependencies[] = sosb_general
-dependencies[] = sosb_features
+dependencies[] = sosb_feature
 

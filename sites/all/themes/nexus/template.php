@@ -60,6 +60,23 @@ function nexus_preprocess_page(&$vars) {
   else {
     $vars['secondary_menu'] = FALSE;
   }
+
+  // Custom for page node slider insertion.
+  if (!empty($vars['node']) && $vars['node']->type == 'page' && !empty($vars['node']->field_page_carousel[LANGUAGE_NONE]) ||
+      !empty($vars['page']['content']['system_main']['nodes'][1]['#node'])) {
+
+    drupal_add_js(drupal_get_path('theme', 'nexus') . '/js/jquery.flexslider.js');
+    drupal_add_js(drupal_get_path('theme', 'nexus') . '/js/slide.js');
+
+    $node = empty($vars['node']) ? $vars['page']['content']['system_main']['nodes'][1]['#node']: $vars['node'];
+    $vars['slider'] = array();
+    if (!empty($node->field_page_carousel[LANGUAGE_NONE])) {
+      foreach ($node->field_page_carousel[LANGUAGE_NONE] as $key => $value) {
+        $path = $value['uri'];
+        $vars['slider'][] = file_create_url($path);
+      }
+    }
+  }
 }
 
 /**

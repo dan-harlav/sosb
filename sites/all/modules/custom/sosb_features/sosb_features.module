@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the sosb_features feature.
- */
-
-include_once 'sosb_features.features.inc';
