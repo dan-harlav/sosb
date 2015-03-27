@@ -77,8 +77,8 @@ function sosb_general_block_info() {
  * Implements hook_node_presave().
  */
 function sosb_general_node_presave($node) {
-  kpr($node);
-  exit;
+  // kpr($node);
+  // exit;
 }
 
 /**
