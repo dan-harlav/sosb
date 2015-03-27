@@ -62,15 +62,74 @@ function sosb_general_get_role_by_name($name) {
 }
 
 /**
- * Implements hook_block_info().
- */
+* Implements hook_block_info().
+*/
 function sosb_general_block_info() {
   $blocks = array();
-  $blocks['sosb_banners'] = array(
-    'info' => t('SOS Bambini Banners'),
+  $blocks['sosb_left_banner'] = array(
+    'title' => t(''),
+    'info' => t('The left sidebar banner'),
+    'region' => 'sidebar_first',
+    'status' => 1,
   );
-
+  $blocks['sosb_left_social'] = array(
+    'title' => t(''),
+    'info' => t('The left sidebar banner'),
+    'region' => 'sidebar_first',
+    'status' => 1,
+  );
   return $blocks;
+}
+/**
+* Implements hook_block_view().
+*/
+function sosb_general_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'sosb_left_banner':
+      $block['region'] = 'sidebar_first';
+      $block['subject'] = '';
+      $block['content'] = sosb_general_banner_block_content();
+      break;
+    case 'sosb_left_social':
+      $block['region'] = 'sidebar_first';
+      $block['subject'] = '';
+      $block['content'] = sosb_general_social_block_content();
+      break;
+  }
+  return $block;
+}
+
+function sosb_general_banner_block_content() {
+  $output = t('<a data-track="NCwwLDAsMCwx" class="gofollow" target="_blank" href="http://www.sosbambini.it/english/sustain-us/"><img src="sites/default/files/images/sustain-us-banner.jpg"></a>');
+  return $output;
+}
+function sosb_general_social_block_content() {
+  $output = t('
+<p>Follow us</p>
+<table class="cnss-social-icon" style="width:180px" border="0" cellspacing="0" cellpadding="0">
+    <tbody>
+        <tr>
+            <td style="width:36px">
+                <a target="_blank" title="facebook" href="https://www.facebook.com/sos.onlus"><img src="http://www.sosbambini.it/english/wp-content/uploads/1368459524_facebook.png" border="0" width="32" height="32" alt="facebook" style="opacity: 1;"></a>
+            </td>
+            <td style="width:36px">
+                <a target="_blank" title="twitter" href="https://twitter.com/intent/follow?original_referer=http%3A%2F%2Fwww.sosbambini.org%2F&amp;screen_name=SosBambiniOnlus&amp;tw_p=followbutton&amp;variant=2.0"><img src="http://www.sosbambini.it/english/wp-content/uploads/1392462140_twitter.png" border="0" width="32" height="32" alt="twitter" style="opacity: 1;"></a>
+            </td>
+            <td style="width:36px">
+                <a target="_blank" title="youtube" href="http://www.youtube.com/user/SosBambiniOnlus"><img src="http://www.sosbambini.it/english/wp-content/uploads/1368459724_youtube.png" border="0" width="32" height="32" alt="youtube" style="opacity: 1;"></a>
+            </td>
+            <td style="width:36px">
+                <a target="_blank" title="Picasa" href="https://plus.google.com/photos/114196634623843031918/albums?banner=pwa"><img src="http://www.sosbambini.it/english/wp-content/uploads/1392462051_picasa.png" border="0" width="32" height="32" alt="Picasa" style="opacity: 1;"></a>
+            </td>
+            <td style="width:36px">
+                <a target="_blank" title="Il Mio Dono" href="https://www.ilmiodono.it/it/organizzazioni/?sslforce=1&amp;id_organizzazione=39"><img src="http://www.sosbambini.it/english/wp-content/uploads/1392570888_dono.jpg" border="0" width="32" height="32" alt="Il Mio Dono" style="opacity: 1;"></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+');
+  return $output;
 }
 
 /**

@@ -61,4 +61,8 @@ dependencies[] = views_ui
 ; custom
 dependencies[] = sosb_general
 dependencies[] = sosb_feature
+dependencies[] = wysiwyg_imagefield
+dependencies[] = wysiwyg
+dependencies[] = insert
+
 
