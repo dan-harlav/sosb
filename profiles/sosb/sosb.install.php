@@ -247,7 +247,7 @@ function sosb_generate_content() {
       'carousel_images' => array('wwa-1.jpg', 'wwa-2.jpg', 'wwa-3.jpg'),
     ),
     1 => array(
-      'content' => '<p>The activities of the Association take place in:</p>
+               'content' => '<p><b>The activities of the Association take place in:</b></p>
     <p>
         <br />
         <u><strong>ITALY</strong></u> – they are about fund raising to support overseas projects, and activities to support projects of other organizations who need it and that deal with aid to children throughout the country, such as the recruitment and deployment of volunteers.

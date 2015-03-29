@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * sosb_feature.features.wysiwyg.inc
+ * sosb_feature_xxx.features.wysiwyg.inc
  */
 
 /**
  * Implements hook_wysiwyg_default_profiles().
  */
-function sosb_feature_wysiwyg_default_profiles() {
+function sosb_feature_xxx_wysiwyg_default_profiles() {
   $profiles = array();
 
   // Exported profile: filtered_html

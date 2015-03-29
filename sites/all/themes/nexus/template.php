@@ -68,7 +68,7 @@ function nexus_preprocess_page(&$vars) {
   }
 
   // Custom for page node slider insertion.
-  if (!empty($vars['node']) && $vars['node']->type == 'page' && !empty($vars['node']->field_page_carousel[LANGUAGE_NONE]) ||
+  if (!empty($vars['node']) && in_array($vars['node']->type, array('page', 'events')) && !empty($vars['node']->field_page_carousel[LANGUAGE_NONE]) ||
       !empty($vars['page']['content']['system_main']['nodes'][1]['#node'])) {
 
     drupal_add_js(drupal_get_path('theme', 'nexus') . '/js/jquery.flexslider.js');

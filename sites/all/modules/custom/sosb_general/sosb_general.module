@@ -5,6 +5,34 @@
  * Implements general functionalities for the CBI project.
  */
 
+/**
+ * Implements hook_menu().
+ */
+function sosb_general_menu() {
+  $items['events'] = array(
+    'title' => 'Events',
+    'page callback' => 'events_list',
+    'page arguments' => array(),
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'main-menu',
+    'weight' => 2,
+  );
+
+  return $items;
+}
+
+function events_list() {
+  $query = new EntityFieldQuery();
+  $result = $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'events')
+    ->execute();
+  if (empty($result['node'])) {
+    return "<h3>Keep in touch with us for future events.</h3>";
+  }
+  $nodes = node_load_multiple(array_keys($result['node']));
+  return node_view_multiple($nodes, $view_mode = 'teaser', $weight = 0, $langcode = NULL);
+}
 
 /**
  * Implements hook_init().
@@ -90,7 +118,7 @@ function sosb_general_block_view($delta = '') {
 }
 
 function sosb_general_banner_block_content() {
-  $output = t('<a data-track="NCwwLDAsMCwx" class="gofollow" target="_blank" href="http://www.sosbambini.it/english/sustain-us/"><img src="sites/default/files/images/sustain-us-banner.jpg"></a>');
+  $output = t('<a data-track="NCwwLDAsMCwx" class="gofollow" target="_blank" href="http://www.sosbambini.it/english/sustain-us/"><img src="/sites/default/files/images/sustain-us-banner.jpg"></a>');
   return $output;
 }
 
