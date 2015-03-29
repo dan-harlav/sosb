@@ -12,7 +12,7 @@ function sosb_install() {
   // sosb_add_content();
   // sosb_clear_mongo_settings();
   // sosb_translations_clear_mongo_translations_data();
-  // sosb_write_default_settings();
+  sosb_write_default_settings();
   // sosb_install_setup_redirects();
   // sosb_ultimate_cron_settings();
   // sosb_settings_generate_full_settings_nodes();

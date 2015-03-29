@@ -87,6 +87,7 @@
               }
               print drupal_render($main_menu_tree);
             ?>
+            <?php print $search_box; ?>
           </div>
         </nav>
       </div>

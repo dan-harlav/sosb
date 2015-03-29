@@ -72,12 +72,6 @@ function sosb_general_block_info() {
     'region' => 'sidebar_first',
     'status' => 1,
   );
-  $blocks['sosb_left_social'] = array(
-    'title' => t(''),
-    'info' => t('The left sidebar banner'),
-    'region' => 'sidebar_first',
-    'status' => 1,
-  );
   return $blocks;
 }
 /**
@@ -91,11 +85,6 @@ function sosb_general_block_view($delta = '') {
       $block['subject'] = '';
       $block['content'] = sosb_general_banner_block_content();
       break;
-    case 'sosb_left_social':
-      $block['region'] = 'sidebar_first';
-      $block['subject'] = '';
-      $block['content'] = sosb_general_social_block_content();
-      break;
   }
   return $block;
 }
@@ -104,32 +93,16 @@ function sosb_general_banner_block_content() {
   $output = t('<a data-track="NCwwLDAsMCwx" class="gofollow" target="_blank" href="http://www.sosbambini.it/english/sustain-us/"><img src="sites/default/files/images/sustain-us-banner.jpg"></a>');
   return $output;
 }
-function sosb_general_social_block_content() {
-  $output = t('
-<p>Follow us</p>
-<table class="cnss-social-icon" style="width:180px" border="0" cellspacing="0" cellpadding="0">
-    <tbody>
-        <tr>
-            <td style="width:36px">
-                <a target="_blank" title="facebook" href="https://www.facebook.com/sos.onlus"><img src="http://www.sosbambini.it/english/wp-content/uploads/1368459524_facebook.png" border="0" width="32" height="32" alt="facebook" style="opacity: 1;"></a>
-            </td>
-            <td style="width:36px">
-                <a target="_blank" title="twitter" href="https://twitter.com/intent/follow?original_referer=http%3A%2F%2Fwww.sosbambini.org%2F&amp;screen_name=SosBambiniOnlus&amp;tw_p=followbutton&amp;variant=2.0"><img src="http://www.sosbambini.it/english/wp-content/uploads/1392462140_twitter.png" border="0" width="32" height="32" alt="twitter" style="opacity: 1;"></a>
-            </td>
-            <td style="width:36px">
-                <a target="_blank" title="youtube" href="http://www.youtube.com/user/SosBambiniOnlus"><img src="http://www.sosbambini.it/english/wp-content/uploads/1368459724_youtube.png" border="0" width="32" height="32" alt="youtube" style="opacity: 1;"></a>
-            </td>
-            <td style="width:36px">
-                <a target="_blank" title="Picasa" href="https://plus.google.com/photos/114196634623843031918/albums?banner=pwa"><img src="http://www.sosbambini.it/english/wp-content/uploads/1392462051_picasa.png" border="0" width="32" height="32" alt="Picasa" style="opacity: 1;"></a>
-            </td>
-            <td style="width:36px">
-                <a target="_blank" title="Il Mio Dono" href="https://www.ilmiodono.it/it/organizzazioni/?sslforce=1&amp;id_organizzazione=39"><img src="http://www.sosbambini.it/english/wp-content/uploads/1392570888_dono.jpg" border="0" width="32" height="32" alt="Il Mio Dono" style="opacity: 1;"></a>
-            </td>
-        </tr>
-    </tbody>
-</table>
-');
-  return $output;
+
+/**
+ * Implements hook_block_info_alter().
+ */
+function sosb_general_block_info_alter(&$blocks, $theme, $code_blocks) {
+  if ($theme == 'nexus') {
+    $blocks['social_media_links']['social-media-links']['region'] = 'sidebar_first';
+    $blocks['social_media_links']['social-media-links']['status'] = TRUE;
+    $blocks['social_media_links']['social-media-links']['weight'] = 1;
+  }
 }
 
 /**
@@ -148,92 +121,18 @@ function sosb_general_node_view($node, $view_mode, $langcode) {
 }
 
 /**
- * Implements hook_block_configure().
+ * Implements hook_preprocess_html().
  */
-// function sosb_general_block_block_configure($delta='') {
-//   $form = array();
+function sosb_general_preprocess_html(&$variables) {
+  // Redirect 404 and 403 response pages to front page.
+  $headers = drupal_get_http_header();
 
-//   switch($delta) {
-//     case 'sosb_banners' :
-//       // Text field form element
-//       $form['text_body'] = array(
-//         '#type' => 'full_html',
-//         '#title' => t('Enter your text here in WYSIWYG format'),
-//         '#default_value' => 'Merge',
-//       );
-
-//       // File selection form element
-//       $form['file'] = array(
-//         '#name' => 'block_image',
-//         '#type' => 'managed_file',
-//         '#title' => t('Choose an Image File'),
-//         '#description' => t('Select an Image for the custom block.  Only *.gif, *.png, *.jpg, and *.jpeg images allowed.'),
-//         '#default_value' => variable_get('block_image_fid', ''),
-//         '#upload_location' => 'public://block_image/',
-//         '#upload_validators' => array(
-//           'file_validate_extensions' => array('gif png jpg jpeg'),
-//         ),
-//       );
-//       break;
-//   }
-//   return $form;
-// }
-
-/**
- * Implements hook_block_view().
- */
-// function sosb_general_block_block_view($delta='') {
-//   $block = array();
-
-//   switch($delta) {
-//     case 'sosb_banners' :
-//       $block['content'] = sosb_general_banners_block_view();
-//       break;
-//   }
-
-//   return $block;
-// }
-
-/**
- * Custom function to assemble renderable array for block content.
- * Returns a renderable array with the block content.
- * @return
- *   returns a renderable array of block content.
- */
-// function sosb_general_banners_block_view() {
-//   $block = array();
-
-//   // Capture the image file path and form into HTML with attributes
-//   $image_file = file_load(variable_get('block_image_fid', ''));
-//   $image_path = '';
-
-//   if (isset($image_file->uri)) {
-//     $image_path = $image_file->uri;
-//   }
-
-//   $image = theme_image(array(
-//     'path' => ($image_path),
-//     'alt' => t('Image description here.'),
-//     'title' => t('This is our block image.'),
-//     'attributes' => array('class' => 'class_name'),
-//   ));
-
-//   // Capture WYSIWYG text from the variable
-//   $text = variable_get('text_variable', '');
-
-//   // Block output in HTML with div wrapper
-//   $block = array(
-//     'image' => array(
-//       '#prefix' => '',
-//       '#type' => 'markup',
-//       '#markup' => $image,
-//     ),
-//     'message' => array(
-//       '#type' => 'markup',
-//       '#markup' => $text,
-//       '#suffix' => '',
-//     ),
-//   );
-
-//   return $block;
-// }
+  if (isset($headers['status']) && in_array($headers['status'], array('404 Not Found', '403 Forbidden'))) {
+    // var_dump($headers);
+    // exit;
+    global $user;
+  //   $not_found_url = ((isset($user->uid) && (bool) $user->uid) || !isset($user->uid)) ? 'admin/index' : 'user/login';
+    $not_found_url = '<front>';
+    // drupal_goto($not_found_url);
+  }
+}

@@ -28,6 +28,12 @@ $breadcrumb[] = drupal_get_title();
  * Override or insert variables into the page template.
  */
 function nexus_preprocess_page(&$vars) {
+  $block = module_invoke('search', 'block_view', 'custom_search_blocks');
+  $vars['search_box'] = render($block['content']);
+  // $search_form = drupal_get_form('search_form');
+  // $search_box = drupal_render($search_form);
+  // $vars['search_box'] = $search_box;
+
   if (isset($vars['main_menu'])) {
     $vars['main_menu'] = theme('links__system_main_menu', array(
       'links' => $vars['main_menu'],
