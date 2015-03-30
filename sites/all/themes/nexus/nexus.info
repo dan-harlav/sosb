@@ -9,6 +9,7 @@ scripts[] = js/bootstrap.min.js
 scripts[] = js/superfish.js
 scripts[] = js/mobilemenu.js
 scripts[] = js/custom.js
+scripts[] = js/sosb.js
 regions[sidebar_first]  = First Sidebar
 regions[header]         = Header
 regions[preface_first]  = Preface First
