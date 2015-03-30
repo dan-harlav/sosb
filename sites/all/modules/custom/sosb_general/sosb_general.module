@@ -118,7 +118,7 @@ function sosb_general_block_view($delta = '') {
 }
 
 function sosb_general_banner_block_content() {
-  $output = t('<a data-track="NCwwLDAsMCwx" class="gofollow" target="_blank" href="http://www.sosbambini.it/english/sustain-us/"><img src="/sites/default/files/images/sustain-us-banner.jpg"></a>');
+  $output = t('<a data-track="NCwwLDAsMCwx" class="gofollow" target="_blank" href="/sustain-us"><img style="width:100%;" src="/sites/default/files/images/sustain-us-banner.jpg"></a>');
   return $output;
 }
 
